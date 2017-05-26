@@ -50,10 +50,10 @@ public class Main extends AppCompatActivity implements OnClickListener {
     public Float[] var3 = new Float[50];
     public int[] var4 = new int[100];
 
-    public ArrayList<Entry> entries1 = new ArrayList<Entry>();
-    public ArrayList<Entry> entries2 = new ArrayList<Entry>();
-    public ArrayList<Entry> entries3 = new ArrayList<Entry>();
-    public ArrayList<Entry> entries4 = new ArrayList<Entry>();
+    public ArrayList<Entry> entries1 = new ArrayList<>();
+    public ArrayList<Entry> entries2 = new ArrayList<>();
+    public ArrayList<Entry> entries3 = new ArrayList<>();
+    public ArrayList<Entry> entries4 = new ArrayList<>();
     public ArrayList<String> xAxis = new ArrayList<>();
 
     LineDataSet dataSet1;
@@ -102,87 +102,41 @@ public class Main extends AppCompatActivity implements OnClickListener {
 
     }
 
+    public void dialogDataType (final int zone){    // création d'une liste déroulante à 3 choix : afficher un graphe, afficher des valeurs simples, ou afficher les deux
+                                                    // pour chaque zone de choix
+        alertDialog = new AlertDialog.Builder(this);  //utilisation d'un objet de typer alertDialog
+        adapter = new ArrayAdapter(this, android.R.layout.select_dialog_singlechoice, choice); //on met dans un arrayAdapter les trois choix sous forme de Strings
+
+        alertDialog.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+                int choices = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                // TODO save deviceAddress
+                showPanel(zone,choices);
+            }
+        });
+        alertDialog.setTitle("Choose your values showing");
+        alertDialog.show();
+    }
+
     public void onClick(View v) {
         int id = v.getId();
         Intent intent = null;
         switch (id) {
-
             case R.id.btnZone1:
-                // création d'une liste déroulante à 3 choix : afficher un graphe, afficher des valeurs simples, ou afficher les deux
-                // pour chaque zone de choix
-                alertDialog = new AlertDialog.Builder(this);  //utilisation d'un objet de typer alertDialog
-                adapter = new ArrayAdapter(this, android.R.layout.select_dialog_singlechoice, choice); //on met dans un arrayAdapter les trois choix sous forme de Strings
-
-                alertDialog.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        dialog.dismiss();
-                        int choice = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                        // TODO save deviceAddress
-                        showPanel(0,choice);
-                    }
-                });
-                alertDialog.setTitle("Choose your values showing");
-                alertDialog.show();
+                dialogDataType(0);
                 break;
-
-
             case R.id.btnZone2:
-
-                alertDialog = new AlertDialog.Builder(this);
-                adapter = new ArrayAdapter(this, android.R.layout.select_dialog_singlechoice, choice); //on met dans un arrayAdapter les trois choix sous forme de Strings
-
-                alertDialog.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        dialog.dismiss();
-                        int choice = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                        // TODO save deviceAddress
-                        showPanel(1,choice);
-                    }
-                });
-                alertDialog.setTitle("Choose your values showing");
-                alertDialog.show();
+                dialogDataType(1);
                 break;
-
             case R.id.btnZone3:
-
-                alertDialog = new AlertDialog.Builder(this);
-                adapter = new ArrayAdapter(this, android.R.layout.select_dialog_singlechoice, choice); //on met dans un arrayAdapter les trois choix sous forme de Strings
-
-                alertDialog.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        dialog.dismiss();
-                        int choice = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                        // TODO save deviceAddress
-                        showPanel(2,choice);
-                    }
-                });
-                alertDialog.setTitle("Choose your values showing");
-                alertDialog.show();
+                dialogDataType(2);
                 break;
-
             case R.id.btnZone4:
-
-                alertDialog = new AlertDialog.Builder(this);
-                adapter = new ArrayAdapter(this, android.R.layout.select_dialog_singlechoice, choice); //on met dans un arrayAdapter les trois choix sous forme de Strings
-
-                alertDialog.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        dialog.dismiss();
-                        int choice = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                        // TODO save deviceAddress
-                        showPanel(3,choice);
-                    }
-                });
-                alertDialog.setTitle("Choose your values showing");
-                alertDialog.show();
+                dialogDataType(3);
                 break;
         }
     }
@@ -292,7 +246,7 @@ public class Main extends AppCompatActivity implements OnClickListener {
         Log.d("Creating Entry2 :"," SUCCESS");
         for(float k=0;k<var3.length;k++){
             // turn your data into Entry objects
-            entries3.add(new Entry((float)k+0.5f,k));
+            entries3.add(new Entry(k+0.5f,k));
         }
 
         Log.d("Creating Entry3 :"," SUCCESS"+entries3);
@@ -361,7 +315,7 @@ public class Main extends AppCompatActivity implements OnClickListener {
         Log.d("Creating Graph3 :"," SUCCESS"+lineData3);
         lineData3.setValueFormatter(DecimalValue);
         Log.d("Creating Graph3 :"," SUCCESS"+lineData3);
-        chart3.setData((com.github.mikephil.charting.data.LineData)lineData3);
+        chart3.setData(lineData3);
         chart3.invalidate(); // refresh
         Log.d("Creating Graph3 :"," SUCCESS");
 
