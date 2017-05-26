@@ -109,7 +109,8 @@ public class Main extends AppCompatActivity implements OnClickListener {
                 dialogZoneDelete();
                 return true;
             case R.id.action_changeGraphType:
-                // Comportement du bouton "Rafraichir"
+                dialogZoneGraphChange();
+                // Comportement du bouton "Change Graphs Type"
                 return true;
             case R.id.action_changeDataType:
                 // Comportement du bouton "Recherche"
@@ -140,6 +141,26 @@ public class Main extends AppCompatActivity implements OnClickListener {
         }
     }
 
+
+    public void dialogZoneGraphChange (){
+        alertDialog = new AlertDialog.Builder(this);  //utilisation d'un objet de typer alertDialog
+        adapter = new ArrayAdapter(this, android.R.layout.select_dialog_singlechoice, choiceZone); //on met dans un arrayAdapter les trois choix sous forme de Strings*
+
+        alertDialog.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
+            int choices;
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+                choices = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                // TODO save deviceAddress
+                clearZones(choices);
+                dialogDataType(choices);
+            }
+        });
+        alertDialog.setTitle("Choose the zone");
+        alertDialog.show();
+    }
 
 
     public void dialogZoneDelete (){    // création d'une liste déroulante à 3 choix : afficher un graphe, afficher des valeurs simples, ou afficher les deux pour chaque zone de choix
@@ -397,7 +418,6 @@ public class Main extends AppCompatActivity implements OnClickListener {
         chart1X.setEnabled(true);
         chart1X.setPosition(XAxis.XAxisPosition.BOTTOM);
         chart1X.setDrawGridLines(false);
-        chart1.setBackgroundColor(Color.parseColor("#00FF00"));
         chart1.invalidate(); // refresh
         Log.d("Creating Graph1 :"," SUCCESS");
 
