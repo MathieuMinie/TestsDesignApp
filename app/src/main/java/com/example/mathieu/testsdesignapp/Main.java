@@ -4,10 +4,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.provider.CalendarContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,31 +20,25 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Main extends AppCompatActivity implements OnClickListener {
 
-    String[] choice = new String[] {"Graph","Values","Graph + Values"};
-    Button btnZone1;
-    Button btnZone2;
-    Button btnZone3;
-    Button btnZone4;
+    String[] choiceGraphType = new String[] {"Graph","Values","Graph + Values"};
+    String[] choiceZone = new String[] {"Zone 1","Zone 2","Zone 3","Zone 4","All"};
 
-    EditText txtZone1;
-    EditText txtZone2;
-    EditText txtZone3;
-    EditText txtZone4;
+    zonesStates states = new zonesStates();
+    Button btnZone1,btnZone2,btnZone3,btnZone4;
 
-    LineChart chart1;
-    LineChart chart2;
-    LineChart chart3;
-    LineChart chart4;
+    EditText txtZone1,txtZone2,txtZone3,txtZone4;
+
+    LineChart chart1,chart2,chart3,chart4;
+    public int Zone = 0;
 
     public int[] var1 = new int[10];
     public int[] var2 = new int[20];
@@ -56,17 +51,18 @@ public class Main extends AppCompatActivity implements OnClickListener {
     public ArrayList<Entry> entries4 = new ArrayList<>();
     public ArrayList<String> xAxis = new ArrayList<>();
 
-    LineDataSet dataSet1;
-    LineDataSet dataSet2;
-    LineDataSet dataSet3;
-    LineDataSet dataSet4;
+    LineDataSet dataSet1, dataSet2, dataSet3, dataSet4;
 
     ArrayAdapter adapter;
     AlertDialog.Builder alertDialog;
     MyValueFormatter DecimalValue = new MyValueFormatter();
 
-    LineData lineData3;
-    double x =0;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -102,25 +98,28 @@ public class Main extends AppCompatActivity implements OnClickListener {
 
     }
 
-    public void dialogDataType (final int zone){    // création d'une liste déroulante à 3 choix : afficher un graphe, afficher des valeurs simples, ou afficher les deux
-                                                    // pour chaque zone de choix
-        alertDialog = new AlertDialog.Builder(this);  //utilisation d'un objet de typer alertDialog
-        adapter = new ArrayAdapter(this, android.R.layout.select_dialog_singlechoice, choice); //on met dans un arrayAdapter les trois choix sous forme de Strings
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                // Comportement du bouton "A Propos"
 
-        alertDialog.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                dialog.dismiss();
-                int choices = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                // TODO save deviceAddress
-                showPanel(zone,choices);
-            }
-        });
-        alertDialog.setTitle("Choose your values showing");
-        alertDialog.show();
+                return true;
+            case R.id.action_clearZones:
+                dialogZoneDelete();
+                return true;
+            case R.id.action_changeGraphType:
+                // Comportement du bouton "Rafraichir"
+                return true;
+            case R.id.action_changeDataType:
+                // Comportement du bouton "Recherche"
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
+
+
 
     public void onClick(View v) {
         int id = v.getId();
@@ -141,6 +140,93 @@ public class Main extends AppCompatActivity implements OnClickListener {
         }
     }
 
+
+
+    public void dialogZoneDelete (){    // création d'une liste déroulante à 3 choix : afficher un graphe, afficher des valeurs simples, ou afficher les deux pour chaque zone de choix
+        alertDialog = new AlertDialog.Builder(this);  //utilisation d'un objet de typer alertDialog
+        adapter = new ArrayAdapter(this, android.R.layout.select_dialog_singlechoice, choiceZone); //on met dans un arrayAdapter les trois choix sous forme de Strings*
+
+        alertDialog.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
+            int choices;
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+                choices = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                // TODO save deviceAddress
+                clearZones(choices);
+            }
+        });
+        alertDialog.setTitle("Choose the zone");
+        alertDialog.show();
+    }
+    public void clearZones(int zone){
+        switch (zone){
+            case 0:
+                btnZone1.setVisibility(View.VISIBLE);
+                chart1.setVisibility(View.INVISIBLE);
+                txtZone1.setVisibility(View.INVISIBLE);
+                states.setZone0State(0);
+                break;
+            case 1:
+                btnZone2.setVisibility(View.VISIBLE);
+                chart2.setVisibility(View.INVISIBLE);
+                txtZone2.setVisibility(View.INVISIBLE);
+                states.setZone1State(0);
+                break;
+            case 2:
+                btnZone3.setVisibility(View.VISIBLE);
+                chart3.setVisibility(View.INVISIBLE);
+                txtZone3.setVisibility(View.INVISIBLE);
+                states.setZone2State(0);
+                break;
+            case 3:
+                btnZone4.setVisibility(View.VISIBLE);
+                chart4.setVisibility(View.INVISIBLE);
+                txtZone4.setVisibility(View.INVISIBLE);
+                states.setZone3State(0);
+                break;
+            case 4:
+                btnZone1.setVisibility(View.VISIBLE);
+                chart1.setVisibility(View.INVISIBLE);
+                txtZone1.setVisibility(View.INVISIBLE);
+                states.setZone0State(0);
+                btnZone2.setVisibility(View.VISIBLE);
+                chart2.setVisibility(View.INVISIBLE);
+                txtZone2.setVisibility(View.INVISIBLE);
+                states.setZone1State(0);
+                btnZone3.setVisibility(View.VISIBLE);
+                chart3.setVisibility(View.INVISIBLE);
+                txtZone3.setVisibility(View.INVISIBLE);
+                states.setZone2State(0);
+                btnZone4.setVisibility(View.VISIBLE);
+                chart4.setVisibility(View.INVISIBLE);
+                txtZone4.setVisibility(View.INVISIBLE);
+                states.setZone3State(0);
+                break;
+        }
+    }
+
+
+
+    public void dialogDataType (final int zone){    // création d'une liste déroulante à 3 choix : afficher un graphe, afficher des valeurs simples, ou afficher les deux pour chaque zone de choix
+        alertDialog = new AlertDialog.Builder(this);  //utilisation d'un objet de typer alertDialog
+        adapter = new ArrayAdapter(this, android.R.layout.select_dialog_singlechoice, choiceGraphType); //on met dans un arrayAdapter les trois choix sous forme de Strings
+
+        alertDialog.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+                int choices = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                // TODO save deviceAddress
+                showPanel(zone,choices);
+            }
+        });
+        alertDialog.setTitle("Choose your values showing");
+        alertDialog.show();
+    }
     private void showPanel(int position,int choice){  // affichage du choix effectué par l'utilisateur
         switch (position) {
             case 0:  // pour la zone 1
@@ -148,13 +234,16 @@ public class Main extends AppCompatActivity implements OnClickListener {
                     case 0:
                         btnZone1.setVisibility(View.INVISIBLE);
                         chart1.setVisibility(View.VISIBLE);
+                        states.setZone0State(1);
                         break;
                     case 1:
                         btnZone1.setVisibility(View.INVISIBLE);
                         txtZone1.setVisibility(View.VISIBLE);
+                        states.setZone0State(2);
                         break;
                     case 2:
                         btnZone1.setVisibility(View.INVISIBLE);
+                        states.setZone0State(3);
                         break;
                 }
                 break;
@@ -163,13 +252,16 @@ public class Main extends AppCompatActivity implements OnClickListener {
                     case 0:
                         btnZone2.setVisibility(View.INVISIBLE);
                         chart2.setVisibility(View.VISIBLE);
+                        states.setZone1State(1);
                         break;
                     case 1:
                         btnZone2.setVisibility(View.INVISIBLE);
                         txtZone2.setVisibility(View.VISIBLE);
+                        states.setZone1State(2);
                         break;
                     case 2:
                         btnZone2.setVisibility(View.INVISIBLE);
+                        states.setZone1State(3);
                         break;
                 }
                 break;
@@ -178,13 +270,16 @@ public class Main extends AppCompatActivity implements OnClickListener {
                     case 0:
                         btnZone3.setVisibility(View.INVISIBLE);
                         chart3.setVisibility(View.VISIBLE);
+                        states.setZone2State(1);
                         break;
                     case 1:
                         btnZone3.setVisibility(View.INVISIBLE);
                         txtZone3.setVisibility(View.VISIBLE);
+                        states.setZone2State(2);
                         break;
                     case 2:
                         btnZone3.setVisibility(View.INVISIBLE);
+                        states.setZone2State(3);
                         break;
                 }
                 break;
@@ -193,19 +288,24 @@ public class Main extends AppCompatActivity implements OnClickListener {
                     case 0:
                         btnZone4.setVisibility(View.INVISIBLE);
                         chart4.setVisibility(View.VISIBLE);
+                        states.setZone3State(1);
                         break;
                     case 1:
                         btnZone4.setVisibility(View.INVISIBLE);
                         txtZone4.setVisibility(View.VISIBLE);
+                        states.setZone3State(2);
                         break;
                     case 2:
                         btnZone4.setVisibility(View.INVISIBLE);
+                        states.setZone3State(3);
                         break;
                 }
                 break;
         }
 
     }
+
+
 
     private void createVars(){
 
@@ -230,7 +330,6 @@ public class Main extends AppCompatActivity implements OnClickListener {
         Log.d("Creating Var4 :"," SUCCESS");
 
     }
-
     private void createEntries(){
 
         for (int i=0;i<var1.length;i++){
@@ -257,7 +356,6 @@ public class Main extends AppCompatActivity implements OnClickListener {
         Log.d("Creating Entry4 :"," SUCCESS");
 
     }
-
     private void createDataSets(){
 
         dataSet1 = new LineDataSet(entries1, "Label"); // add entries to dataset
@@ -284,7 +382,6 @@ public class Main extends AppCompatActivity implements OnClickListener {
         Log.d("Creating Dataset4 :"," SUCCESS");
 
     }
-
     private void createGraphs(){
 
         LineData lineData1 = new LineData(dataSet1);
@@ -311,7 +408,7 @@ public class Main extends AppCompatActivity implements OnClickListener {
         Log.d("Creating Graph2 :"," SUCCESS");
 
 
-        lineData3 = new LineData(dataSet3);
+        LineData lineData3 = new LineData(dataSet3);
         Log.d("Creating Graph3 :"," SUCCESS"+lineData3);
         lineData3.setValueFormatter(DecimalValue);
         Log.d("Creating Graph3 :"," SUCCESS"+lineData3);
