@@ -23,6 +23,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,9 +36,11 @@ public class Main extends AppCompatActivity implements OnClickListener {
     zonesStates states = new zonesStates();
     Button btnZone1,btnZone2,btnZone3,btnZone4;
 
-    EditText txtZone1,txtZone2,txtZone3,txtZone4;
+    EditText txtZone1,txtZone2,txtZone3,txtZone4,txtZone11,txtZone21,txtZone31,txtZone41;
 
-    LineChart chart1,chart2,chart3,chart4;
+    LineChart chart1,chart2,chart3,chart4,chart11,chart21,chart31,chart41;
+
+    LinearLayout both1,both2,both3,both4;
     public int Zone = 0;
 
     public int[] var1 = new int[10];
@@ -63,15 +66,27 @@ public class Main extends AppCompatActivity implements OnClickListener {
         return true;
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         chart1 = (LineChart) findViewById(R.id.chart1);
+        chart11 = (LineChart)findViewById(R.id.chart11);
         chart2 = (LineChart) findViewById(R.id.chart2);
+        chart21 = (LineChart)findViewById(R.id.chart21);
         chart3 = (LineChart) findViewById(R.id.chart3);
+        chart31 = (LineChart)findViewById(R.id.chart31);
         chart4 = (LineChart) findViewById(R.id.chart4);
+        chart41 = (LineChart)findViewById(R.id.chart41);
+
+        both1 = (LinearLayout)findViewById(R.id.both1);
+        both2 = (LinearLayout)findViewById(R.id.both2);
+        both3 = (LinearLayout)findViewById(R.id.both3);
+        both4 = (LinearLayout)findViewById(R.id.both4);
+
         btnZone1 = (Button)findViewById(R.id.btnZone1);
         btnZone1.setOnClickListener(this);
         btnZone2 = (Button)findViewById(R.id.btnZone2);
@@ -82,10 +97,13 @@ public class Main extends AppCompatActivity implements OnClickListener {
         btnZone4.setOnClickListener(this);
 
         txtZone1 = (EditText)findViewById(R.id.txtZone1);
+        txtZone11 = (EditText)findViewById(R.id.txtZone11);
         txtZone2 = (EditText)findViewById(R.id.txtZone2);
+        txtZone21 = (EditText)findViewById(R.id.txtZone21);
         txtZone3 = (EditText)findViewById(R.id.txtZone3);
+        txtZone31 = (EditText)findViewById(R.id.txtZone31);
         txtZone4 = (EditText)findViewById(R.id.txtZone4);
-
+        txtZone41 = (EditText)findViewById(R.id.txtZone41);
 
         createVars();
         Log.d("Creating vars :"," SUCCESS");
@@ -97,6 +115,8 @@ public class Main extends AppCompatActivity implements OnClickListener {
         Log.d("Creating Graphs :"," SUCCESS");
 
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
@@ -142,6 +162,7 @@ public class Main extends AppCompatActivity implements OnClickListener {
     }
 
 
+
     public void dialogZoneGraphChange (){
         alertDialog = new AlertDialog.Builder(this);  //utilisation d'un objet de typer alertDialog
         adapter = new ArrayAdapter(this, android.R.layout.select_dialog_singlechoice, choiceZone); //on met dans un arrayAdapter les trois choix sous forme de Strings*
@@ -161,6 +182,7 @@ public class Main extends AppCompatActivity implements OnClickListener {
         alertDialog.setTitle("Choose the zone");
         alertDialog.show();
     }
+
 
 
     public void dialogZoneDelete (){    // création d'une liste déroulante à 3 choix : afficher un graphe, afficher des valeurs simples, ou afficher les deux pour chaque zone de choix
@@ -187,43 +209,35 @@ public class Main extends AppCompatActivity implements OnClickListener {
                 btnZone1.setVisibility(View.VISIBLE);
                 chart1.setVisibility(View.INVISIBLE);
                 txtZone1.setVisibility(View.INVISIBLE);
+                both1.setVisibility(View.INVISIBLE);
                 states.setZone0State(0);
                 break;
             case 1:
                 btnZone2.setVisibility(View.VISIBLE);
                 chart2.setVisibility(View.INVISIBLE);
                 txtZone2.setVisibility(View.INVISIBLE);
+                both2.setVisibility(View.INVISIBLE);
                 states.setZone1State(0);
                 break;
             case 2:
                 btnZone3.setVisibility(View.VISIBLE);
                 chart3.setVisibility(View.INVISIBLE);
                 txtZone3.setVisibility(View.INVISIBLE);
+                both3.setVisibility(View.INVISIBLE);
                 states.setZone2State(0);
                 break;
             case 3:
                 btnZone4.setVisibility(View.VISIBLE);
                 chart4.setVisibility(View.INVISIBLE);
                 txtZone4.setVisibility(View.INVISIBLE);
+                both4.setVisibility(View.INVISIBLE);
                 states.setZone3State(0);
                 break;
             case 4:
-                btnZone1.setVisibility(View.VISIBLE);
-                chart1.setVisibility(View.INVISIBLE);
-                txtZone1.setVisibility(View.INVISIBLE);
-                states.setZone0State(0);
-                btnZone2.setVisibility(View.VISIBLE);
-                chart2.setVisibility(View.INVISIBLE);
-                txtZone2.setVisibility(View.INVISIBLE);
-                states.setZone1State(0);
-                btnZone3.setVisibility(View.VISIBLE);
-                chart3.setVisibility(View.INVISIBLE);
-                txtZone3.setVisibility(View.INVISIBLE);
-                states.setZone2State(0);
-                btnZone4.setVisibility(View.VISIBLE);
-                chart4.setVisibility(View.INVISIBLE);
-                txtZone4.setVisibility(View.INVISIBLE);
-                states.setZone3State(0);
+                clearZones(0);
+                clearZones(1);
+                clearZones(2);
+                clearZones(3);
                 break;
         }
     }
@@ -264,6 +278,7 @@ public class Main extends AppCompatActivity implements OnClickListener {
                         break;
                     case 2:
                         btnZone1.setVisibility(View.INVISIBLE);
+                        both1.setVisibility(View.VISIBLE);
                         states.setZone0State(3);
                         break;
                 }
@@ -282,6 +297,7 @@ public class Main extends AppCompatActivity implements OnClickListener {
                         break;
                     case 2:
                         btnZone2.setVisibility(View.INVISIBLE);
+                        both2.setVisibility(View.VISIBLE);
                         states.setZone1State(3);
                         break;
                 }
@@ -300,6 +316,7 @@ public class Main extends AppCompatActivity implements OnClickListener {
                         break;
                     case 2:
                         btnZone3.setVisibility(View.INVISIBLE);
+                        both3.setVisibility(View.VISIBLE);
                         states.setZone2State(3);
                         break;
                 }
@@ -318,6 +335,7 @@ public class Main extends AppCompatActivity implements OnClickListener {
                         break;
                     case 2:
                         btnZone4.setVisibility(View.INVISIBLE);
+                        both4.setVisibility(View.VISIBLE);
                         states.setZone3State(3);
                         break;
                 }
@@ -407,6 +425,7 @@ public class Main extends AppCompatActivity implements OnClickListener {
 
         LineData lineData1 = new LineData(dataSet1);
         chart1.setData(lineData1);
+        chart11.setData(lineData1);
         Description desc1 = new Description();
         desc1.setText("1");
         chart1.setDescription(desc1);
@@ -418,13 +437,16 @@ public class Main extends AppCompatActivity implements OnClickListener {
         chart1X.setEnabled(true);
         chart1X.setPosition(XAxis.XAxisPosition.BOTTOM);
         chart1X.setDrawGridLines(false);
+        chart11.invalidate();
         chart1.invalidate(); // refresh
         Log.d("Creating Graph1 :"," SUCCESS");
 
 
         LineData lineData2 = new LineData(dataSet2);
         chart2.setData(lineData2);
+        chart21.setData(lineData2);
         chart2.invalidate(); // refresh
+        chart21.invalidate();
         Log.d("Creating Graph2 :"," SUCCESS");
 
 
@@ -433,13 +455,17 @@ public class Main extends AppCompatActivity implements OnClickListener {
         lineData3.setValueFormatter(DecimalValue);
         Log.d("Creating Graph3 :"," SUCCESS"+lineData3);
         chart3.setData(lineData3);
+        chart31.setData(lineData3);
         chart3.invalidate(); // refresh
+        chart31.invalidate();
         Log.d("Creating Graph3 :"," SUCCESS");
 
 
         LineData lineData4 = new LineData(dataSet4);
         chart4.setData(lineData4);
+        chart41.setData(lineData4);
         chart4.invalidate(); // refresh
+        chart41.invalidate();
         Log.d("Creating Graph4 :"," SUCCESS");
 
     }

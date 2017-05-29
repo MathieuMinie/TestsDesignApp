@@ -14,24 +14,26 @@
             android:id="@+id/both1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="invisible">
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/chart11"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <EditText
                 android:id="@+id/txtZone11"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
+                android:contextClickable="false"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="Name"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
 
         </LinearLayout>
@@ -40,8 +42,8 @@
             android:id="@+id/btnZone1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="+"
-            android:visibility="visible"/>
+            android:text="+\n1"
+            android:visibility="visible" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart1"
@@ -53,10 +55,11 @@
             android:id="@+id/txtZone1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contextClickable="false"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="Name"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
 
     </RelativeLayout>
 
@@ -69,14 +72,15 @@
             android:id="@+id/both2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="invisible">
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/chart21"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <EditText
                 android:id="@+id/txtZone21"
@@ -86,7 +90,7 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="Name"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
 
         </LinearLayout>
@@ -96,8 +100,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="+"
-            android:visibility="visible"/>
+            android:text="+\n2"
+            android:visibility="visible" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart2"
@@ -109,10 +113,12 @@
             android:id="@+id/txtZone2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contextClickable="false"
+            android:editable="false"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="Name"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
 
     </RelativeLayout>
 
@@ -125,14 +131,15 @@
             android:id="@+id/both3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="invisible">
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/chart31"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <EditText
                 android:id="@+id/txtZone31"
@@ -142,7 +149,7 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="Name"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
 
         </LinearLayout>
@@ -152,23 +159,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="+"
-            android:visibility="visible"/>
+            android:text="+\n3"
+            android:visibility="visible" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
 
         <EditText
             android:id="@+id/txtZone3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contextClickable="false"
+            android:cursorVisible="false"
+            android:editable="false"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="Name"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
 
     </RelativeLayout>
 
@@ -181,14 +191,15 @@
             android:id="@+id/both4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="invisible">
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/chart41"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <EditText
                 android:id="@+id/txtZone41"
@@ -198,7 +209,7 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="Name"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
 
         </LinearLayout>
@@ -208,8 +219,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="+"
-            android:visibility="visible"/>
+            android:text="+\n4"
+            android:visibility="visible" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart4"
